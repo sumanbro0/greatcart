@@ -60,8 +60,9 @@ def store(request):
     page_number = request.GET.get('page')
     products = paginator.get_page(page_number)
     n = products_list.count()
-
-    wishlist_ids=WishlistItem.objects.filter(wishlist__user=request.user).values_list('product__id',flat=True)
+    wishlist_ids=[]
+    if request.user.is_authenticated:
+        wishlist_ids=WishlistItem.objects.filter(wishlist__user=request.user).values_list('product__id',flat=True)
 
     categories = Category.objects.all()
     sizes = Size.objects.all()
@@ -103,7 +104,9 @@ def product_detail(request, id):
     colors=Color.objects.filter(name__in=color_names)
     size_id=request.GET.get('size')
     color_id=request.GET.get('color')
-    is_in_wishlist=WishlistItem.objects.filter(wishlist__user=request.user,product=product).exists()
+    is_in_wishlist=False
+    if request.user.is_authenticated:
+        is_in_wishlist=WishlistItem.objects.filter(wishlist__user=request.user,product=product).exists()
     
     variant=None
     if colors and sizes:
