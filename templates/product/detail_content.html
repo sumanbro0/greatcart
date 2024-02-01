@@ -1,46 +1,32 @@
 {% block script %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-            var btnGroup = document.querySelector('.btn-group-toggle');
+    $(document).ready(function () {
 
-            btnGroup.addEventListener('click', function (event) {
-                if (event.target.classList.contains('btn')) {
-                    var clickedBtn = event.target;
-                    var radioInput = clickedBtn.querySelector('input[type="radio"]');
+        $('.btn-group-toggle .btn').on('click', function (event) {
+            $(this).addClass('active').siblings().removeClass('active');
+            $(this).siblings().find('input[type="radio"]').prop('checked', false);
+            var radioInput = $(this).find('input[type="radio"]');
+            radioInput.prop('checked', true);
+            var changeEvent = new Event('change');
+            radioInput[0].dispatchEvent(changeEvent);
+            event.preventDefault();
+            this.form.dispatchEvent(new Event('submit'));
 
-                    clickedBtn.classList.add('active');
-                    Array.from(clickedBtn.parentNode.children).forEach(function (sibling) {
-                        if (sibling !== clickedBtn) {
-                            sibling.classList.remove('active');
-                            sibling.querySelector('input[type="radio"]').checked = false;
-                        }
-                    });
-
-                    radioInput.checked = true;
-
-                    var changeEvent = new Event('change');
-                    radioInput.dispatchEvent(changeEvent);
-
-                    event.preventDefault();
-
-                    clickedBtn.form.dispatchEvent(new Event('submit'));
-
-                    var url = new URL(window.location.href);
-                    if (radioInput.name === 'color') {
-                        url.searchParams.set('color', radioInput.value);
-                    } else if (radioInput.name === 'size') {
-                        url.searchParams.set('size', radioInput.value);
-                    }
-                    history.replaceState({}, '', url);
-                }
-            });
+            var url = new URL(window.location.href);
+            if (radioInput.attr('name')  ==  'color') {
+                url.searchParams.set('color', radioInput.val());
+            } else if (radioInput.attr('name')  ==  'size') {
+                url.searchParams.set('size', radioInput.val());
+            }
+            history.replaceState({}, '', url);
         });
 
+    });
 </script>
 {% endblock script %}
 
-<article  class="content-body">
+<article class="content-body">
     <div id="c">
         <h2 class="title">{{ product.name }}</h2>
         
@@ -55,7 +41,7 @@
         </p>
     </div>
     <hr>
-    <form hx-get="{% url 'product' product.id %}" hx-trigger="submit" hx-push-url="false" hx-target="body"
+    <form  hx-get="{% url 'product' product.id %}" hx-trigger="submit" hx-push-url="false" hx-target="body"
 
         hx-swap="innerHTML" id="productForm">
         {% if colors %}
