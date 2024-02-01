@@ -137,9 +137,6 @@ def product_detail(request, id):
     if variant:
         context['variant'] = variant.id
 
-    if request.htmx and "product" in request.META.get('HTTP_REFERER', '') and (size_id or color_id):
-        return render(request, 'product/detail_content.html', context)
-    
     return render(request, 'product/product_detail.html', context)
 
 @login_required
