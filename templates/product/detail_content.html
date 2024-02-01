@@ -81,13 +81,13 @@
     </form>
     <hr>
     {% if product.id not in cart_ids or variant not in variant_ids %}
-    <a id="#cart" hx-get="{% url 'add_to_cart' product.id %}?id={{variant}}" hx-target="body" hx-include="input[name='color']:checked, input[name='size']:checked" hx-swap="innerHTML" hx-indicator="#progress" href="{% url 'add_to_cart' product.id %}?id={{variant}}" class="btn  btn-primary"> <span
+    <a id="#cart" hx-get="{% url 'add_to_cart' product.id %}?id={{variant}}" hx-target="#main" hx-include="input[name='color']:checked, input[name='size']:checked" hx-swap="innerHTML" hx-indicator="#progress" href="{% url 'add_to_cart' product.id %}?id={{variant}}" class="btn  btn-primary"> <span
             class="text">Add to
             cart</span>
         <i class="fas fa-shopping-cart"></i> </a>
     {% else %}
     <button id="#cart" hx-include="input[name='color']:checked, input[name='size']:checked" hx-boost="true" hx-get="{% url 'remove_from_cart' product.id %}?id={{variant}}" 
-    hx-swap="innerHTML" hx-indicator="#progress" hx-target="body" hx-push-url="false" 
+    hx-swap="innerHTML" hx-indicator="#progress" hx-target="#main" hx-push-url="false" 
     class="btn text-white btn-danger"> <span class="text">Remove from cart</span>
         <i class="fas fa-shopping-cart"></i> </button>
     {% endif %}
