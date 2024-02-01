@@ -8,7 +8,7 @@
 
 <div class="row">
     {% for product in products %}
-    <div class="col-md-3 mb-4">
+    <div class="col-md-4 mb-4">
         <div class="card card-product-grid h-100">
             {% if product.images.all %}
             <a href="{% url 'product' product.id %}" hx-boost="true" hx-target="body" class="img-wrap">
