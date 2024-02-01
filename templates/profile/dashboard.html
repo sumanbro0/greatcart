@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+	#content {
+		min-height: 80vh;
+	    justify-content: center;
+    	align-items: center;
+	}
+
+	.center-spinner {
+		position: absolute;
+	}
+	.list-group-item a {
+		color: black;
+	}
+
+	.list-group-item a.active {
+		color: blue;
+	}
+	li{
+		cursor: pointer;
+	}
+</style>
+
+<div class="container">
+	<div class="row">
+		<aside class="col-md-4 py-5 ">
+			<ul class="list-group">
+				<li class="list-group-item">
+					<a hx-indicator="#progress" hx-get="{% url 'profile' %}" hx-swap="innerHTML" hx-target="#content"
+						hx-trigger="click, load" hx-indicator="#progress" data-state="profile">
+						<i class="fas fa-user"></i> My Profile
+					</a>
+				</li>
+				<li class="list-group-item">
+					<a hx-indicator="#progress"  hx-get="{% url 'orders' %}" hx-swap="innerHTML" hx-target="#content"
+						hx-boost="true" data-state="orders">
+						<i class="fas fa-shopping-cart"></i> Orders
+					</a>
+				</li>
+				<li class="list-group-item">
+					<a hx-indicator="#progress"  hx-get="{% url 'address' %}" hx-swap="innerHTML" hx-target="#content"
+						hx-boost="true" data-state="address">
+						<i class="fas fa-address-card"></i> Addresses
+					</a>
+				</li>
+				<li class="list-group-item">
+					<a hx-indicator="#progress" href="{% url 'logout' %}" id="logout-link">
+						<i class="fas fa-sign-out-alt"></i> Logout
+					</a>
+				</li>
+			</ul>
+		</aside>
+		<main id="content" class="col-md-8 mt-4">
+		</main>
+	</div>
+</div>
+{% endblock content %}
