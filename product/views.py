@@ -111,8 +111,10 @@ def product_detail(request, id):
         is_in_wishlist=WishlistItem.objects.filter(wishlist__user=request.user,product=product).exists()
         cart_ids=Cart.objects.filter(user=request.user).values_list('items__product__id',flat=True)
         variant_ids = Cart.objects.filter(user=request.user).values_list('items__variant_product__id', flat=True)  
+        review = product.reviews.filter(user=request.user)
 
-        
+
+
     variant=None
     if colors and sizes:
         if size_id and color_id:
@@ -124,7 +126,6 @@ def product_detail(request, id):
             variant=product.variants.filter(color__id=color_id).first()
     price=product.get_final_price(variant)
     in_stock=product.is_in_stock(variant)
-    review = product.reviews.filter(user=request.user)
     already_reviewed = review.exists()
     context={"product":product,"sizes":sizes,"colors":colors,"price":price,"in_stock":in_stock,"cart_ids":cart_ids,"variant_ids":variant_ids,"already_reviewed":already_reviewed,"review":review.first(),"is_in_wishlist":is_in_wishlist}
 
