@@ -70,7 +70,6 @@
                 <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
                     {% for size in sizes %}
                     {% with request.GET.size|add:0 as size_id %}
-                    <!-- convert size_id to integer -->
 
                     <label hx-push-url="false" class="btn btn-light  {% if size.id  ==  size_id %} active {% endif %} ">
                         <input type="radio" name="size" value="{{size.id}}" {% if size.id == size_id %} checked {% endif %}>

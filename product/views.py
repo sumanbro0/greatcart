@@ -136,6 +136,8 @@ def product_detail(request, id):
 
     if variant:
         context['variant'] = variant.id
+    if request.htmx:
+        return render(request, 'product/detail_content.html', context)
 
     return render(request, 'product/product_detail.html', context)
 
