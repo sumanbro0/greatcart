@@ -129,8 +129,10 @@ def product_detail(request, id):
             variant=product.variants.filter(color__id=color_id).first()
     price=product.get_final_price(variant)
     in_stock=product.is_in_stock(variant)
-    context={"product":product,"sizes":sizes,"colors":colors,"price":price,"in_stock":in_stock,"cart_ids":cart_ids,"variant_ids":variant_ids,"already_reviewed":already_reviewed,"review":review.first(),"is_in_wishlist":is_in_wishlist}
+    context={"product":product,"sizes":sizes,"colors":colors,"price":price,"in_stock":in_stock,"cart_ids":cart_ids,"variant_ids":variant_ids,"already_reviewed":already_reviewed,"is_in_wishlist":is_in_wishlist}
 
+    if review:
+        context['review']=review.first()
 
     if variant:
         context['variant'] = variant.id
