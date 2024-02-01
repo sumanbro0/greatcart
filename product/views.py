@@ -40,7 +40,7 @@ def store(request):
     query=request.GET.get('query')
     
     products_list = Product.objects.all()
-    cart_ids=Cart.objects.filter(user=request.user).values_list('items__product__id',flat=True)
+   
 
     if category_ids:
         products_list = products_list.filter(category__id__in=category_ids)
@@ -61,8 +61,10 @@ def store(request):
     products = paginator.get_page(page_number)
     n = products_list.count()
     wishlist_ids=[]
+    cart_ids=[]
     if request.user.is_authenticated:
         wishlist_ids=WishlistItem.objects.filter(wishlist__user=request.user).values_list('product__id',flat=True)
+        cart_ids=Cart.objects.filter(user=request.user).values_list('items__product__id',flat=True)
 
     categories = Category.objects.all()
     sizes = Size.objects.all()
@@ -106,7 +108,7 @@ def product_detail(request, id):
     size_id=request.GET.get('size')
     color_id=request.GET.get('color')
     is_in_wishlist=False
-
+    review=None
     if request.user.is_authenticated:
         is_in_wishlist=WishlistItem.objects.filter(wishlist__user=request.user,product=product).exists()
         cart_ids=Cart.objects.filter(user=request.user).values_list('items__product__id',flat=True)
