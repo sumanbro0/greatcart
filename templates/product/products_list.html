@@ -25,13 +25,13 @@
                 <p class="card-text">${{ product.base_price }}</p>
                 <div class="mt-auto">
                     <div class="d-flex justify-content-between ">
-                        <a href="{% url 'product' product.id %}" hx-boost="true" class="btn btn-primary btn-md ">View Details</a>
+                        <a hx-indicator="#progress" href="{% url 'product' product.id %}" hx-boost="true" class="btn btn-primary btn-md ">View Details</a>
                         {% if product.id in wishlist %}
-                        <a hx-boost="true" href="{% url 'remove_from_wishlist' product.id %}" class="btn btn-danger btn-md">
+                        <a hx-indicator="#progress" hx-boost="true" href="{% url 'remove_from_wishlist' product.id %}" class="btn btn-danger btn-md">
                             <i class="fa fa-heart"></i> 
                         </a>
                         {% else %}
-                        <a hx-boost="true" href="{% url 'add_to_wishlist' product.id %}" class="btn btn-secondary btn-md">
+                        <a hx-indicator="#progress" hx-boost="true" href="{% url 'add_to_wishlist' product.id %}" class="btn btn-secondary btn-md">
                             <i class="fa fa-heart"></i> 
                         </a>
                         {% endif %}
