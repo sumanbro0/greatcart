@@ -95,8 +95,9 @@ def store(request):
 
 def product_detail(request, id):
     product = Product.objects.prefetch_related("images","variants",'variants__sizes', 'variants__color',"reviews__user").get(id=id)
-    cart_ids=Cart.objects.filter(user=request.user).values_list('items__product__id',flat=True)
-    variant_ids = Cart.objects.filter(user=request.user).values_list('items__variant_product__id', flat=True)   
+    cart_ids=[]
+    variant_ids=[]
+     
 
     size_names=product.variants.values_list('sizes__name', flat=True).distinct()
     color_names=product.variants.values_list('color__name', flat=True).distinct()
@@ -105,9 +106,13 @@ def product_detail(request, id):
     size_id=request.GET.get('size')
     color_id=request.GET.get('color')
     is_in_wishlist=False
+
     if request.user.is_authenticated:
         is_in_wishlist=WishlistItem.objects.filter(wishlist__user=request.user,product=product).exists()
-    
+        cart_ids=Cart.objects.filter(user=request.user).values_list('items__product__id',flat=True)
+        variant_ids = Cart.objects.filter(user=request.user).values_list('items__variant_product__id', flat=True)  
+
+        
     variant=None
     if colors and sizes:
         if size_id and color_id:
