@@ -16,7 +16,8 @@ from django.contrib import messages
 # Create your views here.
 def index(request):
     products = Product.objects.prefetch_related("images").annotate(average_rating=Avg('reviews__rating')).order_by('-average_rating')[:5]  
-    wishlist_ids=WishlistItem.objects.filter(wishlist__user=request.user).values_list('product__id',flat=True)
+    if request.user.is_authenticated:
+        wishlist_ids=WishlistItem.objects.filter(wishlist__user=request.user).values_list('product__id',flat=True)
     return render(request, 'product/index.html',{"products":products,"wishlist":wishlist_ids})
 
 def search_suggestions(request):
