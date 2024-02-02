@@ -82,8 +82,7 @@
 													<label>Min</label>
 													<select class="mr-2 form-control" name="min_price">
 														{% for price in price_options %}
-														<option value="{{price}}" {% if forloop.first %}selected{%
-															endif%}>
+														<option value="{{price}}" {% if forloop.first %}selected{% endif %}>
 															${{price}}</option>
 														{% endfor %}
 													</select>
@@ -92,8 +91,7 @@
 													<label>Max</label>
 													<select class="mr-2 form-control" name="max_price">
 														{% for price in price_options %}
-														<option value="{{price}}" {% if forloop.last %}selected{% endif
-															%}>
+														<option value="{{price}}" {% if forloop.last %}selected{% endif	%}>
 															${{price}}</option>
 														{% endfor %}
 													</select>
