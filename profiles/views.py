@@ -45,11 +45,13 @@ def signup_view(request):
 
 
 def login_view(request):
+
+    if request.user.is_authenticated:
+        return redirect('home')
+
     referrer=request.META.get('HTTP_REFERER',None)
-    print(referrer)
 
     querystring=request.GET.urlencode()
-    print(querystring)
     
     if referrer and not ('users' in referrer  or referrer == 'http://127.0.0.1:8000/'):
         return HttpResponse(f"<script>window.location.href='/users/login/?{querystring}';</script>")
