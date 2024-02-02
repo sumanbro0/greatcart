@@ -232,12 +232,7 @@ def remove_from_wishlist(request, id):
     item = WishlistItem.objects.get(wishlist=wishlist, product=product)
     item.delete()
     referrer=request.META.get('HTTP_REFERER','')
-    print(referrer)
-    # next_param = parse_qs(urlparse(referrer).query).get('next', [''])[0]
-
-    # if next_param:
-    #     id = unquote(next_param).strip('/').split('/')[-1]
-    #     return redirect('product', id=id)
+  
 
     messages.success(request, "Removed from wishlist")
     return redirect(referrer)
