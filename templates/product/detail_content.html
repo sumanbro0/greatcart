@@ -51,7 +51,7 @@
                 <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
                     {% for color in colors %}
                     {% with request.GET.color|add:0 as color_id %}
-                    <label hx-push-url="false" class="btn btn-light {% if color.id  ==  color_id %} active {% endif %} ">
+                    <label class="btn btn-light {% if color.id  ==  color_id %} active {% endif %} ">
                         <input type="radio" name="color" value="{{color.id}}" {% if color.id == color_id %} checked {%  endif %}>
                         {{ color.name }}
                     </label>

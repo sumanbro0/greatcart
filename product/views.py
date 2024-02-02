@@ -1,8 +1,9 @@
 import secrets
-from urllib.parse import urlencode
+from urllib.parse import parse_qs, unquote, urlencode
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
 from django.urls import reverse
+from urllib.parse import urlparse
 
 from cart.models import Cart
 from .models import Category, Color, Product, Review, Size, Wishlist, WishlistItem
@@ -158,6 +159,13 @@ def add_review(request, id):
                 print(e)
                 messages.error(request, "Error adding review")
 
+    referrer=request.META.get('HTTP_REFERER','')
+    next_param = parse_qs(urlparse(referrer).query).get('next', [''])[0]
+
+    if next_param:
+        id = unquote(next_param).strip('/').split('/')[-1]
+        return redirect('product', id=id)
+
     return render(request, 'product/reviews.html', {"product": product, "already_reviewed": already_reviewed,"review":review,"msg":True})
 
 @login_required
@@ -207,10 +215,14 @@ def add_to_wishlist(request, id):
     item,created=WishlistItem.objects.get_or_create(wishlist=wishlist, product=product)
     if created:
         messages.success(request, "Added to wishlist")
+        if 'users' in referrer:
+            return redirect('wishlist')
         return redirect(referrer)   
 
-    messages.warning(request, "Already in wishlist wishlist")
-    return redirect(referrer)
+    messages.warning(request, "Already in wishlist ")
+    if 'users' in referrer:
+        return redirect('wishlist')
+    return redirect(referrer)   
 
 
 @login_required
@@ -220,6 +232,13 @@ def remove_from_wishlist(request, id):
     item = WishlistItem.objects.get(wishlist=wishlist, product=product)
     item.delete()
     referrer=request.META.get('HTTP_REFERER','')
+    print(referrer)
+    # next_param = parse_qs(urlparse(referrer).query).get('next', [''])[0]
+
+    # if next_param:
+    #     id = unquote(next_param).strip('/').split('/')[-1]
+    #     return redirect('product', id=id)
+
     messages.success(request, "Removed from wishlist")
     return redirect(referrer)
 
