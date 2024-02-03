@@ -194,7 +194,7 @@ def place_order(request):
     
     address=Address.objects.get(id=address_id,profile__user=request.user)
     if payment_method=="pod":
-        o=cart.convert_to_order(address)
+        o=cart.convert_to_order(address,False)
         messages.success(request,"Order placed successfully.")
         return render(request,"cart/order_complete.html",{"order":o,"pod":True})
     
