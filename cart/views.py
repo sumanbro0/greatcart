@@ -194,14 +194,20 @@ def place_order(request):
     
     address=Address.objects.get(id=address_id,profile__user=request.user)
     if payment_method=="pod":
+
         o=cart.convert_to_order(address,False)
         messages.success(request,"Order placed successfully.")
         return render(request,"cart/order_complete.html",{"order":o,"pod":True})
     
     if payment_method=="khalti":
+        print("initiating payment",cart,address_id)
         res=initiate_khalti_payment(request,cart,address_id)
+        print(res)
         if res.get("pidx",None):
             return HttpResponse('<script>window.location.href="{}";</script>'.format(res['payment_url']))
+        elif res.get("error_key",None):
+            messages.warning(request,res.get("detail"))
+            return redirect("checkout")
         else:
             messages.error(request,"Error occured while placing order. Please try again.")
             return redirect("checkout")
